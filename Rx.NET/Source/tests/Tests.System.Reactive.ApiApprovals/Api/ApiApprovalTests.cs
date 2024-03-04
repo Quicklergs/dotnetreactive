@@ -25,6 +25,22 @@ namespace ReactiveTests.Tests.Api
         {
         }
 
+        // TODO IDG10: temporarily disabled, because PublicApiGenerator is essentially incapable of
+        // validating type exported facades. Even if we pass it a list of all the types we want
+        // to export, it makes the assumption that they are all canonically defined in the same
+        // assembly.
+        //[Fact]
+        //public Task LegacySystemReactive()
+        //{
+        //    var facadeAsm = typeof(System.Reactive.Placeholder).Assembly;
+        //    ModuleDefinition module = ModuleDefinition.ReadModule(facadeAsm.Location);
+        //    Type[] exportedTypes = module.ExportedTypes
+        //        //.Where(et => et.IsPublic)
+        //        .Select(et => facadeAsm.GetType(et.FullName.Replace("/", "+"))).ToArray();
+        //    var publicApi = GeneratePublicApi(exportedTypes);
+        //    return Verify(publicApi, "cs");
+        //}
+
         [Fact]
         public Task Core()
         {
@@ -50,7 +66,7 @@ namespace ReactiveTests.Tests.Api
         {
             ApiGeneratorOptions options = new()
             {
-                AllowNamespacePrefixes = new[] { "System", "Microsoft" }
+                AllowNamespacePrefixes = new[] { "System", "Microsoft" },
             };
             return Filter(ApiGenerator.GeneratePublicApi(assembly, options));
         }
